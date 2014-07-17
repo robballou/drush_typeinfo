@@ -28,8 +28,24 @@ function typeinfo_drush_command() {
     'description' => 'Show entities',
     'aliases' => array('til'),
     'examples' => array(
-      'drush typeinfo' => 'List entity types',
+      'drush typeinfo-list' => 'List entity types',
       'drush typeinfo [type]' => 'Show fields for [type]',
+    ),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
+  );
+
+  $commands['typeinfo-field'] = array(
+    'callback' => 'drush_typeinfo_field',
+    'description' => 'Show field information',
+    'aliases' => array('tif'),
+    'example' => array(
+      'drush typeinfo-field [field]' => 'List info about a field',
+      'drush typeinfo-field [field] [type]' => 'List info about a field',
+    ),
+    'arguments' => array(
+      'field' => 'The field name',
+      'type' => 'The bundle name',
+      'entity_type' => 'The entity type. Defaults to node',
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
@@ -77,6 +93,31 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
   }
 
   drush_log(t('No fields for this type'), 'ok');
+}
+
+/**
+ * Get info about a field.
+ */
+function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
+  $field_info = field_info_field($field);
+  if ($field_info) {
+    drush_log(t('Field info for: @field', array('@field' => $field)), 'ok');
+    drush_log(t('Type: @type', array('@type' => $field_info['type'])), 'ok');
+
+    // show entityreference values
+    if (isset($field_info['settings']['target_type'])) {
+      drush_log(
+        t('Target type: @target', array('@target' => $field_info['settings']['target_type'])),
+        'ok'
+      );
+      if (isset($field_info['settings']['handler_settings']['target_bundles'])) {
+        drush_log(
+          t('Target bundles: @bundles', array('@bundles' => implode(',', array_keys($field_info['settings']['handler_settings']['target_bundles'])))),
+          'ok'
+        );
+      }
+    }
+  }
 }
 
 /**
