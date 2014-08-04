@@ -99,6 +99,9 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
  * Get info about a field.
  */
 function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
+  if (!$field) {
+    drush_log(t('No field specified'), 'error');
+  }
   $field_info = field_info_field($field);
   if ($field_info) {
     drush_log(t('Field info for: @field', array('@field' => $field)), 'ok');
