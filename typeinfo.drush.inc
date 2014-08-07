@@ -104,18 +104,18 @@ function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
   }
   $field_info = field_info_field($field);
   if ($field_info) {
-    drush_log(t('Field info for: @field', array('@field' => $field)), 'ok');
-    drush_log(t('Type: @type', array('@type' => $field_info['type'])), 'ok');
+    drush_log(t('Field info for: !field', array('!field' => $field)), 'ok');
+    drush_log(t('Type: !type', array('!type' => $field_info['type'])), 'ok');
 
     // show entityreference values
     if (isset($field_info['settings']['target_type'])) {
       drush_log(
-        t('Target type: @target', array('@target' => $field_info['settings']['target_type'])),
+        t('Target type: !target', array('!target' => $field_info['settings']['target_type'])),
         'ok'
       );
       if (isset($field_info['settings']['handler_settings']['target_bundles'])) {
         drush_log(
-          t('Target bundles: @bundles', array('@bundles' => implode(',', array_keys($field_info['settings']['handler_settings']['target_bundles'])))),
+          t('Target bundles: !bundles', array('!bundles' => implode(',', array_keys($field_info['settings']['handler_settings']['target_bundles'])))),
           'ok'
         );
       }
