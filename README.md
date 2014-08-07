@@ -20,3 +20,7 @@ List all fields for the node/article bundle with the `typeinfo` (`ti`):
 List all the fields for the taxonomy_term/location bundle:
 
     drush typeinfo location taxonomy_term
+
+**New** Get info about a particular field:
+
+    drush typeinfo-field field_location
