@@ -133,9 +133,10 @@ function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
 
     // show taxonomy term reference info
     if (isset($field_info['settings']['allowed_values'])) {
-      foreach ($field_info['settings']['allowed_values'] as $allowed_values) {
-        if (isset($allowed_values['vocabulary'])) {
-          drush_log('Vocabulary: !vocabulary', array('!vocabulary' => $allowed_values['vocabulary']), 'ok');
+      foreach ($field_info['settings']['allowed_values'] as $allowed_value) {
+        var_dump($allowed_value);
+        if (isset($allowed_value['vocabulary'])) {
+          drush_log('Vocabulary: !vocabulary', array('!vocabulary' => $allowed_value['vocabulary']), 'ok');
         }
       }
     }
