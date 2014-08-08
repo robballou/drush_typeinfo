@@ -145,6 +145,11 @@ function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
       $granularity = array_filter($field_info['settings']['granularity']);
       drush_log(t('Datetime collection: !items', array('!items' => implode(', ', $granularity))), 'ok');
     }
+
+    // show cardinality
+    if (isset($field_info['cardinality'])) {
+      drush_log(t('Cardinality: !cardinality', array('!cardinality' => $field_info['cardinality'])), 'ok');
+    }
   }
 }
 
