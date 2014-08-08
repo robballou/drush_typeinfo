@@ -139,6 +139,12 @@ function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
         }
       }
     }
+
+    // show datetime settings
+    if (isset($field_info['settings']['granularity'])) {
+      $granularity = array_filter($field_info['settings']['granularity']);
+      drush_log('Datetime collection: !items', array('!items' => implode(', ', $granularity)), 'ok');
+    }
   }
 }
 
