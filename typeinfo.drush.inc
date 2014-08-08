@@ -42,6 +42,11 @@ function typeinfo_drush_command() {
       'drush typeinfo-field [field]' => 'List info about a field',
       'drush typeinfo-field [field] [type]' => 'List info about a field',
     ),
+    'options' => array(
+      'field-info' => array(
+        'description' => 'Output field info',
+      ),
+    ),
     'arguments' => array(
       'field' => 'The field name',
       'type' => 'The bundle name',
@@ -102,7 +107,12 @@ function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
   if (!$field) {
     drush_log(t('No field specified'), 'error');
   }
+
   $field_info = field_info_field($field);
+  if (drush_get_option('field-info')) {
+    var_dump($field_info);
+  }
+
   if ($field_info) {
     drush_log(t('Field info for: !field', array('!field' => $field)), 'ok');
     drush_log(t('Type: !type', array('!type' => $field_info['type'])), 'ok');
