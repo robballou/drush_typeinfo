@@ -20,6 +20,11 @@ function typeinfo_drush_command() {
       'type' => 'The bundle name',
       'entity_type' => 'The entity type. Defaults to node',
     ),
+    'options' => array(
+      'field-info' => array(
+        'description' => 'Output field info',
+      ),
+    ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
 
@@ -83,6 +88,9 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
   $fields = array();
 
   foreach ($field_info as $field => $info) {
+    if (drush_get_option('field-info')) {
+      var_dump($info);
+    }
     $fields[$field] = array(
       $field,
       $info['widget']['type'],
