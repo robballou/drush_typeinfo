@@ -91,8 +91,15 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
     if (drush_get_option('field-info')) {
       var_dump($info);
     }
+
+    $required = 'No';
+    if (isset($info['required']) && $info['required']) {
+      $required = 'Yes';
+    }
+
     $fields[$field] = array(
       $field,
+      $required,
       $info['widget']['type'],
       $info['label'],
     );
@@ -101,7 +108,7 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
   drush_log($label, 'ok');
   if (count($fields) > 0) {
     ksort($fields);
-    array_unshift($fields, array('Field', 'Type', 'Label'));
+    array_unshift($fields, array('Field', 'Required', 'Type', 'Label'));
     return drush_print_table($fields, TRUE);
   }
 
