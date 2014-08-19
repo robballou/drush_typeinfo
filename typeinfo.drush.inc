@@ -102,7 +102,8 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
     $fields[$field] = array(
       $field,
       $required,
-      $field_info['type'] . ':' . $info['widget']['type'],
+      $field_info['type'],
+      $info['widget']['type'],
       $info['label'],
     );
   }
@@ -110,7 +111,7 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
   drush_log($label, 'ok');
   if (count($fields) > 0) {
     ksort($fields);
-    array_unshift($fields, array('Field', 'Required', 'Type', 'Label'));
+    array_unshift($fields, array('Field', 'Required', 'Type', 'Widget', 'Label'));
     return drush_print_table($fields, TRUE);
   }
 
