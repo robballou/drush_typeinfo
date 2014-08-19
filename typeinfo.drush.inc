@@ -102,7 +102,7 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
     $fields[$field] = array(
       $field,
       $required,
-      $info['widget']['type'],
+      $field_info['type'] . ':' . $info['widget']['type'],
       $info['label'],
     );
   }
