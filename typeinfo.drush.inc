@@ -24,6 +24,9 @@ function typeinfo_drush_command() {
       'field-info' => array(
         'description' => 'Output field info',
       ),
+      'field-names-only' => array(
+        'description' => 'Output only field names',
+      ),
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
@@ -99,13 +102,19 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
       $required = 'Yes';
     }
 
-    $fields[$field] = array(
+    $field_output = array(
       $field,
       $required,
       $field_info['type'],
       $info['widget']['type'],
       $info['label'],
     );
+
+    if (drush_get_option('field-names-only')) {
+      $field_output = array($field);
+    }
+
+    $fields[$field] = $field_output;
   }
 
   drush_log($label, 'ok');
