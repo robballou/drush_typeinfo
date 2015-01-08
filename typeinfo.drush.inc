@@ -264,7 +264,7 @@ function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
   if (count($fields) > 0) {
     ksort($fields);
     foreach ($fields as $field) {
-      print explode("\t", $field) . "\n";
+      print implode("\t", $field) . "\n";
     }
   }
 
