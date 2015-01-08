@@ -63,6 +63,22 @@ function typeinfo_drush_command() {
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
 
+  $commands['typeinfo-report'] = array(
+    'callback' => 'drush_typeinfo_report',
+    'description' => 'Show fields for a type',
+    'aliases' => array('tir'),
+    'examples' => array(
+      'drush typeinfo-report [type]' => 'Show fields for [type]',
+    ),
+    'arguments' => array(
+      'type' => 'The bundle name',
+      'entity_type' => 'The entity type. Defaults to node',
+    ),
+    'options' => array(
+    ),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
+  );
+
   return $commands;
 }
 
@@ -195,4 +211,59 @@ function drush_typeinfo_list() {
   }
 
   return drush_print_table($bundles);
+}
+
+/**
+ * List fields in an entity/bundle
+ *
+ * @param string $type
+ *   A string for the bundle.
+ * @param string $entity_type
+ *   The entity type for this bundle. Defaults to node.
+ */
+function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
+  // if no types are passed, output types
+  if (!$type) {
+    return drush_typeinfo_list();
+  }
+
+  $type_info = entity_get_info($entity_type);
+  if (!isset($type_info['bundles'][$type])) {
+    drush_log(t('The requested type does not exist. Try: drush typeinfo-list'), 'error');
+    return;
+  }
+
+  $label = $type_info['bundles'][$type]['label'];
+  $field_info = field_info_instances($entity_type, $type);
+  $fields = array();
+
+  var_dump($type_info);
+
+  foreach ($field_info as $field => $info) {
+    $field_info = field_info_field($field);
+
+    $required = 'No';
+    if (isset($info['required']) && $info['required']) {
+      $required = 'Yes';
+    }
+
+    $field_output = array(
+      $field,
+      $required,
+      $field_info['type'],
+      $info['widget']['type'],
+      $info['label'],
+    );
+
+    $fields[$field] = $field_output;
+  }
+
+  drush_log($label, 'ok');
+  if (count($fields) > 0) {
+    ksort($fields);
+    array_unshift($fields, array('Field', 'Required', 'Type', 'Widget', 'Label'));
+    return drush_print_table($fields, TRUE);
+  }
+
+  drush_log(t('No fields for this type'), 'ok');
 }
