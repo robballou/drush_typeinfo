@@ -253,10 +253,10 @@ function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
       $field_info['type'] . ', ' .
       $info['widget']['type'] . ', ';
 
-    if ($field_info['cardinality'] === 1) {
+    if ($field_info['cardinality'] == 1) {
       $notes .= 'single value';
     }
-    elseif ($field_info['cardinality'] === 0) {
+    elseif ($field_info['cardinality'] == -1) {
       $notes .= 'unlimited values';
     }
     else {
