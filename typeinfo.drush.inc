@@ -232,12 +232,14 @@ function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
     drush_log(t('The requested type does not exist. Try: drush typeinfo-list'), 'error');
     return;
   }
+  $node_info = NULL;
+  if ($entity_type === 'node') {
+    $node_info = node_type_get_type($type);
+  }
 
   $label = $type_info['bundles'][$type]['label'];
   $field_info = field_info_instances($entity_type, $type);
   $fields = array();
-
-  var_dump($type_info);
 
   foreach ($field_info as $field => $info) {
     $field_info = field_info_field($field);
@@ -261,8 +263,9 @@ function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
   drush_log($label, 'ok');
   if (count($fields) > 0) {
     ksort($fields);
-    array_unshift($fields, array('Field', 'Required', 'Type', 'Widget', 'Label'));
-    return drush_print_table($fields, TRUE);
+    foreach ($fields as $field) {
+      print explode("\t", $field) . "\n";
+    }
   }
 
   drush_log(t('No fields for this type'), 'ok');
