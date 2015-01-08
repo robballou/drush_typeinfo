@@ -281,6 +281,7 @@ function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
     foreach ($fields as $field) {
       print implode("\t", $field) . "\n";
     }
+    return;
   }
 
   drush_log(t('No fields for this type'), 'ok');
