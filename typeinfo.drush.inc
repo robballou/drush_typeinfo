@@ -249,11 +249,19 @@ function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
       $required = 'Yes';
     }
 
-    $nodes = '"' . $info['label'] . '", ' .
+    $notes = '"' . $info['label'] . '", ' .
       $field_info['type'] . ', ' .
       $info['widget']['type'] . ', ';
 
-    var_dump($field_info);
+    if ($field_info['cardinality'] === 1) {
+      $notes .= 'single value';
+    }
+    elseif ($field_info['cardinality'] === 0) {
+      $notes .= 'unlimited values';
+    }
+    else {
+      $notes .= 'values = ' . $field_info['cardinality'];
+    }
 
     $field_output = array(
       // source field
