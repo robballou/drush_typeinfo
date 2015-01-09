@@ -21,6 +21,10 @@ List all the fields for the taxonomy_term/location bundle:
 
     drush typeinfo location taxonomy_term
 
-**New** Get info about a particular field:
+Get info about a particular field:
 
     drush typeinfo-field field_location
+
+Get a "report" about an entity type, useful for adding to a spreadsheet when auditing a site:
+
+    drush typeinfo-report article
