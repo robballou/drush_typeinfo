@@ -145,8 +145,11 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
 
 /**
  * Get info about a field.
+ *
+ * @param string $field
+ *   The field name.
  */
-function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
+function drush_typeinfo_field($field) {
   if (!$field) {
     drush_log(t('No field specified'), 'error');
   }
