@@ -201,7 +201,11 @@ function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
 
     // show cardinality
     if (isset($field_info['cardinality'])) {
-      drush_log(t('Cardinality: !cardinality', array('!cardinality' => $field_info['cardinality'])), 'ok');
+      $cardinality = $field_info['cardinality'];
+      if ($cardinality == -1) {
+        $cardinality = 'unlimited';
+      }
+      drush_log(t('Cardinality: !cardinality', array('!cardinality' => $cardinality)), 'ok');
     }
   }
 }
