@@ -170,7 +170,7 @@ function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
       // figure out the target bundles
       $target_bundles = array();
       if (isset($field_info['settings']['handler_settings']['target_bundles']) && $field_info['settings']['handler_settings']['target_bundles']) {
-        $target_bundles = $field_info['settings']['handler_settings']['target_bundles'];
+        $target_bundles = array_keys($field_info['settings']['handler_settings']['target_bundles']);
       }
       elseif (isset($field_info['bundles']) && isset($field_info['bundles'][$field_info['settings']['target_type']])) {
         $target_bundles = $field_info['bundles'][$field_info['settings']['target_type']];
@@ -178,7 +178,7 @@ function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
 
       if ($target_bundles) {
         drush_log(
-          t('Target bundles: !bundles', array('!bundles' => implode(',', array_keys($target_bundles)))),
+          t('Target bundles: !bundles', array('!bundles' => implode(',', $target_bundles))),
           'ok'
         );
       }
