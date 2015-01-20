@@ -178,7 +178,7 @@ function drush_typeinfo_field($field, $type = NULL, $entity_type = 'node') {
 
       if ($target_bundles) {
         drush_log(
-          t('Target bundles: !bundles', array('!bundles' => implode(',', $target_bundles))),
+          t('Target bundles: !bundles', array('!bundles' => implode(', ', $target_bundles))),
           'ok'
         );
       }
