@@ -49,6 +49,7 @@ function typeinfo_drush_command() {
     'example' => array(
       'drush typeinfo-field [field]' => 'List info about a field',
       'drush typeinfo-field [field] [type]' => 'List info about a field',
+      'drush typeinfo-field [field] [type] [entity]' => 'List info about a field',
     ),
     'options' => array(
       'field-info' => array(
@@ -149,19 +150,38 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
  * @param string $field
  *   The field name.
  */
-function drush_typeinfo_field($field) {
+function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
   if (!$field) {
     drush_log(t('No field specified'), 'error');
   }
 
   $field_info = field_info_field($field);
-  if (drush_get_option('field-info')) {
+  if ($field_info && drush_get_option('field-info')) {
+    drush_log(t('Field info:'));
     var_dump($field_info);
   }
 
   if ($field_info) {
     drush_log(t('Field info for: !field', array('!field' => $field)), 'ok');
     drush_log(t('Type: !type', array('!type' => $field_info['type'])), 'ok');
+
+    if ($bundle) {
+      if (!$entity_type) {
+        $entity_type = 'node';
+      }
+      $instance_info = field_info_instance($entity_type, $field, $bundle);
+
+      if ($instance_info && drush_get_option('field-info')) {
+        drush_log(t('Instance info:'));
+        var_dump($instance_info);
+      }
+
+      if ($instance_info) {
+        drush_log(t('Widget: !widget', array('!widget' => $instance_info['widget']['type'])), 'ok');
+        $displays = array_keys(array_filter($instance_info['display'], 'drush_typeinfo_filter_displays'));
+        drush_log(t('Display view modes: !modes', array('!modes' => implode(', ', $displays))), 'ok');
+      }
+    }
 
     // show entityreference values
     if (isset($field_info['settings']['target_type'])) {
@@ -305,4 +325,14 @@ function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
   }
 
   drush_log(t('No fields for this type'), 'ok');
+}
+
+/**
+ * Filter the field instance display values.
+ */
+function drush_typeinfo_filter_displays($item) {
+  if (isset($item['type']) && $item['type'] != 'hidden') {
+    return TRUE;
+  }
+  return FALSE;
 }
