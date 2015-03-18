@@ -25,6 +25,10 @@ Get info about a particular field:
 
     drush typeinfo-field field_location
 
+To get some instance information when field_location is used in the page content type:
+
+    drush typeinfo-field field_location page
+
 Get a "report" about an entity type, useful for adding to a spreadsheet when auditing a site:
 
     drush typeinfo-report article
