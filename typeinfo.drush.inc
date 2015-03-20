@@ -55,6 +55,9 @@ function typeinfo_drush_command() {
       'field-info' => array(
         'description' => 'Output field info',
       ),
+      'display-info' => array(
+        'description' => 'Output a fields display settings (must specify type)'
+      ),
     ),
     'arguments' => array(
       'field' => 'The field name',
@@ -174,6 +177,11 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
       if ($instance_info && drush_get_option('field-info')) {
         drush_log(t('Instance info:'));
         var_dump($instance_info);
+      }
+
+      if ($instance_info && drush_get_option('display-info')) {
+        drush_log(t('Display info:'));
+        var_dump($instance_info['display']);
       }
 
       if ($instance_info) {
