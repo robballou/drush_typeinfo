@@ -233,6 +233,11 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
       drush_log(t('Datetime collection: !items', array('!items' => implode(', ', $granularity))), 'ok');
     }
 
+    // default value
+    if (isset($field_info['default_value'])) {
+      drush_log(t('Default value: !default', array('!default' => $field_info['default_value'])), 'ok');
+    }
+
     // show cardinality
     if (isset($field_info['cardinality'])) {
       $cardinality = $field_info['cardinality'];
