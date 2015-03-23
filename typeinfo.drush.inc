@@ -58,6 +58,9 @@ function typeinfo_drush_command() {
       'display-info' => array(
         'description' => 'Output a fields display settings (must specify type)'
       ),
+      'widget-info' => array(
+        'description' => 'Output a fields widget settings (must specify type)'
+      ),
     ),
     'arguments' => array(
       'field' => 'The field name',
@@ -182,6 +185,11 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
       if ($instance_info && drush_get_option('display-info')) {
         drush_log(t('Display info:'));
         var_dump($instance_info['display']);
+      }
+
+      if ($instance_info && drush_get_option('widget-info')) {
+        drush_log(t('Widget info:'));
+        var_dump($instance_info['widget']);
       }
 
       if ($instance_info) {
