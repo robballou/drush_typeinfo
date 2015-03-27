@@ -21,13 +21,19 @@ List all the fields for the taxonomy_term/location bundle:
 
     drush typeinfo location taxonomy_term
 
-Get info about a particular field:
+Get info about a particular field with `typeinfo-field` (`tif`):
 
     drush typeinfo-field field_location
 
 To get some instance information when field_location is used in the page content type:
 
     drush typeinfo-field field_location page
+
+To view raw information about a field:
+
+    drush typeinfo-field field_location page --field-info
+    drush typeinfo-field field_location page --display-info
+    drush typeinfo-field field_location page --widget-info
 
 Get a "report" about an entity type, useful for adding to a spreadsheet when auditing a site:
 
