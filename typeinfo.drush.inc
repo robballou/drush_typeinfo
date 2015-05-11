@@ -27,6 +27,9 @@ function typeinfo_drush_command() {
       'field-names-only' => array(
         'description' => 'Output only field names',
       ),
+      'type' => array(
+        'description' => 'Limit the listed types to an entity type',
+      ),
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
@@ -263,9 +266,16 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
 function drush_typeinfo_list() {
   $info = entity_get_info();
   $bundles = array();
-  foreach ($info as $entity => $entity_info) {
+
+  $limit_type = drush_get_option('type');
+
+  foreach (array_keys($info) as $entity) {
+    // skip if this is not the requested type
+    if ($limit_type && $entity != $limit_type) {
+      continue;
+    }
     if (isset($info[$entity]['bundles'])) {
-      foreach ($info[$entity]['bundles'] as $bundle => $bundle_info) {
+      foreach (array_keys($info[$entity]['bundles']) as $bundle) {
         array_push($bundles, array($entity, $bundle));
       }
     }
