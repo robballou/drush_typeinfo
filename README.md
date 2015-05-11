@@ -12,6 +12,7 @@ Get information about entity bundles and their fields.
 List all entity types and their bundles using `typeinfo-list` (`til`):
 
     drush typeinfo-list
+    drush typeinfo-list --type=node
 
 List all fields for the node/article bundle with the `typeinfo` (`ti`):
 
