@@ -4,6 +4,12 @@ Get information about entity bundles and their fields.
 
 ## Installation
 
+### Drush
+
+    drush dl drush_typeinfo
+
+### Git
+
     pushd ~/.drush
     git clone git@github.com:robballou/drush_typeinfo.git
 
