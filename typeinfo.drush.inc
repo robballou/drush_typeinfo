@@ -27,9 +27,6 @@ function typeinfo_drush_command() {
       'field-names-only' => array(
         'description' => 'Output only field names',
       ),
-      'type' => array(
-        'description' => 'Limit the listed types to an entity type',
-      ),
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
@@ -41,6 +38,11 @@ function typeinfo_drush_command() {
     'examples' => array(
       'drush typeinfo-list' => 'List entity types',
       'drush typeinfo [type]' => 'Show fields for [type]',
+    ),
+    'options' => array(
+      'type' => array(
+        'description' => 'Limit the listed types to an entity type',
+      ),
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
