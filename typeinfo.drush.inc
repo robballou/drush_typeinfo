@@ -283,6 +283,12 @@ function drush_typeinfo_list() {
     }
   }
 
+  // sort things so they're all OCD
+  ksort($bundles);
+  foreach ($bundles as $bundle) {
+    asort($bundles[$bundle]);
+  }
+
   return drush_print_table($bundles);
 }
 
