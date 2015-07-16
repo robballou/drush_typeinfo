@@ -380,7 +380,7 @@ function drush_typeinfo_filter_displays($item) {
  * Sort bundle items
  */
 function drush_typeinfo_sort_bundles($a, $b) {
-  if ($a[0] = $b[0]) {
+  if ($a[0] === $b[0]) {
     return strcmp($a[1], $b[1]);
   }
   return strcmp($a[0], $b[0]);
