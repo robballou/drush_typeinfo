@@ -287,12 +287,7 @@ function drush_typeinfo_list($type = NULL) {
   }
 
   // sort things so they're all OCD
-  if ($bundles) {
-    ksort($bundles);
-    foreach ($bundles as $bundle) {
-      asort($bundles[$bundle]);
-    }
-  }
+  usort($bundles, 'drush_typeinfo_sort_bundles');
 
   return drush_print_table($bundles);
 }
@@ -379,4 +374,14 @@ function drush_typeinfo_filter_displays($item) {
     return TRUE;
   }
   return FALSE;
+}
+
+/**
+ * Sort bundle items
+ */
+function drush_typeinfo_sort_bundles($a, $b) {
+  if ($a[0] = $b[0]) {
+    return strcmp($a[1], $b[1]);
+  }
+  return strcmp($a[0], $b[0]);
 }
