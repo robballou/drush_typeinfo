@@ -265,11 +265,14 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
 /**
  * List entity/bundles
  */
-function drush_typeinfo_list() {
+function drush_typeinfo_list($type = NULL) {
   $info = entity_get_info();
   $bundles = array();
 
   $limit_type = drush_get_option('type');
+  if (!$limit_type && $type) {
+    $limit_type = $type;
+  }
 
   foreach (array_keys($info) as $entity) {
     // skip if this is not the requested type
