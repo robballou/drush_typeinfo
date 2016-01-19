@@ -127,7 +127,7 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
     }
 
     $required = 'No';
-    if (isset($info['required']) && $info['required']) {
+    if ($info->get('required')) {
       $required = 'Yes';
     }
 
