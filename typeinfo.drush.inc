@@ -116,7 +116,7 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
   }
 
   $label = $bundles[$type]['label'];
-  $field_info = field_info_instances($entity_type, $type);
+  $field_info = \Drupal::entityManager()->getFieldDefinitions($entity_type, $type);
   $fields = [];
 
   foreach ($field_info as $field => $info) {
