@@ -266,7 +266,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
  * List entity/bundles
  */
 function drush_typeinfo_list($type = NULL) {
-  $info = entity_get_info();
+  $info = \Drupal::entityManager()->getDefinitions();
   $bundles = array();
 
   $limit_type = drush_get_option('type');
@@ -275,13 +275,15 @@ function drush_typeinfo_list($type = NULL) {
   }
 
   foreach (array_keys($info) as $entity) {
+
     // skip if this is not the requested type
     if ($limit_type && $entity != $limit_type) {
       continue;
     }
-    if (isset($info[$entity]['bundles'])) {
-      foreach (array_keys($info[$entity]['bundles']) as $bundle) {
-        array_push($bundles, array($entity, $bundle));
+    if ($type = $info[$entity]->get('bundle_entity_type')) {
+      $entity_bundles = entity_get_bundles($entity);
+      foreach (array_keys($entity_bundles) as $bundle) {
+        $bundles[] = [$entity, $bundle];
       }
     }
   }
