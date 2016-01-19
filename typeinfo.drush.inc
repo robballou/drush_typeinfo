@@ -123,8 +123,21 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
     $field_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($entity_type, $field);
     if (drush_get_option('field-info')) {
       var_dump($info);
-      var_dump($field_info);
+      var_dump($info->getDisplayOptions());
+      if ($field_info) {
+        var_dump($field_info);
+      }
     }
+    // if (drush_get_option('field-info')) {
+    //   var_dump($field);
+    //   var_dump(get_class($info));
+    //   if ($field_info) {
+    //     var_dump(get_class($field_info));
+    //   }
+    //   var_dump('end');
+    //   //var_dump($info);
+    //   //var_dump($field_info);
+    // }
 
     $required = $info->isRequired() ? 'Yes' : 'No';
     $type = $info->getType();
