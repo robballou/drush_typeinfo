@@ -120,7 +120,7 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
   $fields = [];
 
   foreach ($field_info as $field => $info) {
-    $field_info = field_info_field($field);
+    $field_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($field);
     if (drush_get_option('field-info')) {
       var_dump($info);
       var_dump($field_info);
