@@ -132,8 +132,8 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
       $field,
       $required,
       $field_info->getType(),
-      $info['widget']['type'],
-      $info['label'],
+      '?',
+      $info->getLabel(),
     ];
 
     if (drush_get_option('field-names-only')) {
