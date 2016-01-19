@@ -284,6 +284,9 @@ function drush_typeinfo_list($type = NULL) {
     }
     if ($type = $info[$entity]->get('bundle_entity_type')) {
       $entity_bundles = entity_get_bundles($entity);
+      if (!$entity_bundles) {
+        $bundles[] = [$entity, '-'];
+      }
       foreach (array_keys($entity_bundles) as $bundle) {
         $bundles[] = [$entity, $bundle];
       }
