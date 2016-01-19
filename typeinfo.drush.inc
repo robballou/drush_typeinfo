@@ -102,10 +102,15 @@ function typeinfo_drush_command() {
  * @param string $entity_type
  *   The entity type for this bundle. Defaults to node.
  */
-function drush_typeinfo($type = NULL, $entity_type = 'node') {
+function drush_typeinfo($type = NULL, $entity_type = NULL) {
   // if no types are passed, output types
   if (!$type) {
     return drush_typeinfo_list();
+  }
+
+  if (!$entity_type) {
+    $type_info = \Drupal::entityManager()->getDefinitions($entity_type);
+    var_dump($type_info);
   }
 
   $type_info = \Drupal::entityManager()->getDefinitions($entity_type);
