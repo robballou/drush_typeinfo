@@ -126,15 +126,12 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
       var_dump($field_info);
     }
 
-    $required = 'No';
-    if ($info->get('required')) {
-      $required = 'Yes';
-    }
+    $required = $info->isRequired() ? 'Yes' : 'No';
 
     $field_output = [
       $field,
       $required,
-      $field_info['type'],
+      $field_info->getType(),
       $info['widget']['type'],
       $info['label'],
     ];
