@@ -280,7 +280,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
  * List entity/bundles
  */
 function drush_typeinfo_list($type = NULL) {
-  $info = \Drupal::entityManager()->getDefinitions();
+  $info = \Drupal::entityTypeManager()->getDefinitions();
   $bundles = [];
 
   $limit_type = drush_get_option('type');
