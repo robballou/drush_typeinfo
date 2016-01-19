@@ -108,14 +108,20 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
     return drush_typeinfo_list();
   }
 
+  $type_info = NULL;
   if (!$entity_type) {
     $type_info = \Drupal::entityManager()->getDefinitions($entity_type);
-    var_dump($type_info);
+    if ($type_info) {
+      $entity_type = $type;
+      $type = NULL;
+    }
   }
 
-  $type_info = \Drupal::entityManager()->getDefinitions($entity_type);
+  if (!$type_info) {
+    $type_info = \Drupal::entityManager()->getDefinitions($entity_type);
+  }
   $bundles = entity_get_bundles($entity_type);
-  if (!isset($bundles[$type])) {
+  if ($bundles && !isset($bundles[$type])) {
     drush_log(t('The requested type does not exist. Try: drush typeinfo-list'), 'error');
     return;
   }
