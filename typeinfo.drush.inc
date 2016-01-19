@@ -6,90 +6,90 @@
  * Register the typeinfo command(s)
  */
 function typeinfo_drush_command() {
-  $commands = array();
+  $commands = [];
 
-  $commands['typeinfo'] = array(
+  $commands['typeinfo'] = [
     'callback' => 'drush_typeinfo',
     'description' => 'Show fields for a type',
-    'aliases' => array('ti'),
-    'examples' => array(
+    'aliases' => ['ti'],
+    'examples' => [
       'drush typeinfo' => 'List entity types',
       'drush typeinfo [type]' => 'Show fields for [type]',
-    ),
-    'arguments' => array(
+    ],
+    'arguments' => [
       'type' => 'The bundle name',
       'entity_type' => 'The entity type. Defaults to node',
-    ),
-    'options' => array(
-      'field-info' => array(
+    ],
+    'options' => [
+      'field-info' => [
         'description' => 'Output field info',
-      ),
-      'field-names-only' => array(
+      ],
+      'field-names-only' => [
         'description' => 'Output only field names',
-      ),
-    ),
+      ],
+    ],
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
-  );
+  ];
 
-  $commands['typeinfo-list'] = array(
+  $commands['typeinfo-list'] = [
     'callback' => 'drush_typeinfo_list',
     'description' => 'Show entities',
-    'aliases' => array('til'),
-    'examples' => array(
+    'aliases' => ['til'],
+    'examples' => [
       'drush typeinfo-list' => 'List entity types',
       'drush typeinfo [type]' => 'Show fields for [type]',
-    ),
-    'options' => array(
-      'type' => array(
+    ],
+    'options' => [
+      'type' => [
         'description' => 'Limit the listed types to an entity type',
-      ),
-    ),
+      ],
+    ],
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
-  );
+  ];
 
-  $commands['typeinfo-field'] = array(
+  $commands['typeinfo-field'] = [
     'callback' => 'drush_typeinfo_field',
     'description' => 'Show field information',
-    'aliases' => array('tif'),
-    'example' => array(
+    'aliases' => ['tif'],
+    'example' => [
       'drush typeinfo-field [field]' => 'List info about a field',
       'drush typeinfo-field [field] [type]' => 'List info about a field',
       'drush typeinfo-field [field] [type] [entity]' => 'List info about a field',
-    ),
-    'options' => array(
-      'field-info' => array(
+    ],
+    'options' => [
+      'field-info' => [
         'description' => 'Output field info',
-      ),
-      'display-info' => array(
+      ],
+      'display-info' => [
         'description' => 'Output a fields display settings (must specify type)'
-      ),
-      'widget-info' => array(
+      ],
+      'widget-info' => [
         'description' => 'Output a fields widget settings (must specify type)'
-      ),
-    ),
-    'arguments' => array(
+      ],
+    ],
+    'arguments' => [
       'field' => 'The field name',
       'type' => 'The bundle name',
       'entity_type' => 'The entity type. Defaults to node',
-    ),
+    ],
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
-  );
+  ];
 
-  $commands['typeinfo-report'] = array(
+  $commands['typeinfo-report'] = [
     'callback' => 'drush_typeinfo_report',
     'description' => 'Show fields for a type',
-    'aliases' => array('tir'),
-    'examples' => array(
+    'aliases' => ['tir'],
+    'examples' => [
       'drush typeinfo-report [type]' => 'Show fields for [type]',
-    ),
-    'arguments' => array(
+    ],
+    'arguments' => [
       'type' => 'The bundle name',
       'entity_type' => 'The entity type. Defaults to node',
-    ),
-    'options' => array(
-    ),
+    ],
+    'options' => [
+    ],
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
-  );
+  ];
 
   return $commands;
 }
@@ -116,7 +116,7 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
 
   $label = $type_info['bundles'][$type]['label'];
   $field_info = field_info_instances($entity_type, $type);
-  $fields = array();
+  $fields = [];
 
   foreach ($field_info as $field => $info) {
     $field_info = field_info_field($field);
@@ -130,16 +130,16 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
       $required = 'Yes';
     }
 
-    $field_output = array(
+    $field_output = [
       $field,
       $required,
       $field_info['type'],
       $info['widget']['type'],
       $info['label'],
-    );
+    ];
 
     if (drush_get_option('field-names-only')) {
-      $field_output = array($field);
+      $field_output = [$field];
     }
 
     $fields[$field] = $field_output;
@@ -148,7 +148,7 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
   drush_log($label, 'ok');
   if (count($fields) > 0) {
     ksort($fields);
-    array_unshift($fields, array('Field', 'Required', 'Type', 'Widget', 'Label'));
+    array_unshift($fields, ['Field', 'Required', 'Type', 'Widget', 'Label']);
     return drush_print_table($fields, TRUE);
   }
 
@@ -173,8 +173,8 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
   }
 
   if ($field_info) {
-    drush_log(t('Field info for: !field', array('!field' => $field)), 'ok');
-    drush_log(t('Type: !type', array('!type' => $field_info['type'])), 'ok');
+    drush_log(t('Field info for: !field', ['!field' => $field]), 'ok');
+    drush_log(t('Type: !type', ['!type' => $field_info['type']]), 'ok');
 
     if ($bundle) {
       if (!$entity_type) {
@@ -198,21 +198,21 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
       }
 
       if ($instance_info) {
-        drush_log(t('Widget: !widget', array('!widget' => $instance_info['widget']['type'])), 'ok');
+        drush_log(t('Widget: !widget', ['!widget' => $instance_info['widget']['type']]), 'ok');
         $displays = array_keys(array_filter($instance_info['display'], 'drush_typeinfo_filter_displays'));
-        drush_log(t('Display view modes: !modes', array('!modes' => implode(', ', $displays))), 'ok');
+        drush_log(t('Display view modes: !modes', ['!modes' => implode(', ', $displays)]), 'ok');
       }
     }
 
     // show entityreference values
     if (isset($field_info['settings']['target_type'])) {
       drush_log(
-        t('Target type: !target', array('!target' => $field_info['settings']['target_type'])),
+        t('Target type: !target', ['!target' => $field_info['settings']['target_type']]),
         'ok'
       );
 
       // figure out the target bundles
-      $target_bundles = array();
+      $target_bundles = [];
       if (isset($field_info['settings']['handler_settings']['target_bundles']) && $field_info['settings']['handler_settings']['target_bundles']) {
         $target_bundles = array_keys($field_info['settings']['handler_settings']['target_bundles']);
       }
@@ -222,7 +222,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
 
       if ($target_bundles) {
         drush_log(
-          t('Target bundles: !bundles', array('!bundles' => implode(', ', $target_bundles))),
+          t('Target bundles: !bundles', ['!bundles' => implode(', ', $target_bundles)]),
           'ok'
         );
       }
@@ -232,10 +232,10 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     if (isset($field_info['settings']['allowed_values'])) {
       foreach ($field_info['settings']['allowed_values'] as $allowed_key => $allowed_value) {
         if (is_array($allowed_value) && isset($allowed_value['vocabulary'])) {
-          drush_log(t('Vocabulary: !vocabulary', array('!vocabulary' => $allowed_value['vocabulary'])), 'ok');
+          drush_log(t('Vocabulary: !vocabulary', ['!vocabulary' => $allowed_value['vocabulary']]), 'ok');
         }
         else {
-          drush_log(t('Value: !value: !string', array('!value' => $allowed_key, '!string' => $allowed_value)), 'ok');
+          drush_log(t('Value: !value: !string', ['!value' => $allowed_key, '!string' => $allowed_value]), 'ok');
         }
       }
     }
@@ -243,12 +243,12 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     // show datetime settings
     if (isset($field_info['settings']['granularity'])) {
       $granularity = array_filter($field_info['settings']['granularity']);
-      drush_log(t('Datetime collection: !items', array('!items' => implode(', ', $granularity))), 'ok');
+      drush_log(t('Datetime collection: !items', ['!items' => implode(', ', $granularity)]), 'ok');
     }
 
     // default value
     if (isset($field_info['default_value'])) {
-      drush_log(t('Default value: !default', array('!default' => $field_info['default_value'])), 'ok');
+      drush_log(t('Default value: !default', ['!default' => $field_info['default_value']]), 'ok');
     }
 
     // show cardinality
@@ -257,7 +257,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
       if ($cardinality == -1) {
         $cardinality = 'unlimited';
       }
-      drush_log(t('Cardinality: !cardinality', array('!cardinality' => $cardinality)), 'ok');
+      drush_log(t('Cardinality: !cardinality', ['!cardinality' => $cardinality]), 'ok');
     }
   }
 }
@@ -267,7 +267,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
  */
 function drush_typeinfo_list($type = NULL) {
   $info = \Drupal::entityManager()->getDefinitions();
-  $bundles = array();
+  $bundles = [];
 
   $limit_type = drush_get_option('type');
   if (!$limit_type && $type) {
@@ -275,7 +275,6 @@ function drush_typeinfo_list($type = NULL) {
   }
 
   foreach (array_keys($info) as $entity) {
-
     // skip if this is not the requested type
     if ($limit_type && $entity != $limit_type) {
       continue;
@@ -320,7 +319,7 @@ function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
 
   $label = $type_info['bundles'][$type]['label'];
   $field_info = field_info_instances($entity_type, $type);
-  $fields = array();
+  $fields = [];
 
   foreach ($field_info as $field => $info) {
     $field_info = field_info_field($field);
@@ -344,14 +343,14 @@ function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
       $notes .= 'values = ' . $field_info['cardinality'];
     }
 
-    $field_output = array(
+    $field_output = [
       // source field
       $field,
       $notes,
       // $field_info['type'],
       // $info['widget']['type'],
       // $info['label'],
-    );
+    ];
 
     $fields[$field] = $field_output;
   }
