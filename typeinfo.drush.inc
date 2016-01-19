@@ -108,7 +108,7 @@ function drush_typeinfo($type = NULL, $entity_type = 'node') {
     return drush_typeinfo_list();
   }
 
-  $type_info = entity_get_info($entity_type);
+  $type_info = \Drupal::entityManager()->getDefinitions('entity_type');
   if (!isset($type_info['bundles'][$type])) {
     drush_log(t('The requested type does not exist. Try: drush typeinfo-list'), 'error');
     return;
@@ -307,7 +307,7 @@ function drush_typeinfo_report($type = NULL, $entity_type = 'node') {
     return drush_typeinfo_list();
   }
 
-  $type_info = entity_get_info($entity_type);
+  $type_info = \Drupal::entityManager()->getDefinitions('entity_type');
   if (!isset($type_info['bundles'][$type])) {
     drush_log(t('The requested type does not exist. Try: drush typeinfo-list'), 'error');
     return;
