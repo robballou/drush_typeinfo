@@ -101,7 +101,7 @@ function typeinfo_get_entity($entity_type = NULL) {
   if (!$entity_type) {
     return \Drupal::entityTypeManager()->getDefinitions();
   }
-  return \Drupal::entityTypeManager()->getDefinitions($entity_type);
+  return \Drupal::entityTypeManager()->getDefinition($entity_type);
 }
 
 /**
@@ -118,7 +118,7 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
     return drush_typeinfo_list();
   }
 
-  // figure out if $type is really a bundle or an entity type
+  // figure out if $type is really a bundle or an entity type.
   $type_info = NULL;
   if (!$entity_type) {
     $type_info = typeinfo_get_entity($type);
@@ -132,6 +132,7 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
     $type_info = typeinfo_get_entity($entity_type);
   }
 
+  $label = $type_info->getLabel();
   $bundles = [];
   if ($type) {
     $bundles = entity_get_bundles($entity_type);
