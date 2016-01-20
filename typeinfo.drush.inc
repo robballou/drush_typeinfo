@@ -95,6 +95,16 @@ function typeinfo_drush_command() {
 }
 
 /**
+ * Get the entity information.
+ */
+function typeinfo_get_entity($entity_type = NULL) {
+  if (!$entity_type) {
+    return \Drupal::entityTypeManager()->getDefinitions();
+  }
+  return \Drupal::entityTypeManager()->getDefinitions($entity_type);
+}
+
+/**
  * List fields in an entity/bundle
  *
  * @param string $type
@@ -108,9 +118,10 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
     return drush_typeinfo_list();
   }
 
+  // figure out if $type is really a bundle or an entity type
   $type_info = NULL;
   if (!$entity_type) {
-    $type_info = \Drupal::entityManager()->getDefinitions($entity_type);
+    $type_info = typeinfo_get_entity($type);
     if ($type_info) {
       $entity_type = $type;
       $type = NULL;
@@ -118,15 +129,19 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
   }
 
   if (!$type_info) {
-    $type_info = \Drupal::entityManager()->getDefinitions($entity_type);
-  }
-  $bundles = entity_get_bundles($entity_type);
-  if ($bundles && !isset($bundles[$type])) {
-    drush_log(t('The requested type does not exist. Try: drush typeinfo-list'), 'error');
-    return;
+    $type_info = typeinfo_get_entity($entity_type);
   }
 
-  $label = $bundles[$type]['label'];
+  $bundles = [];
+  if ($type) {
+    $bundles = entity_get_bundles($entity_type);
+    if ($bundles && !isset($bundles[$type])) {
+      drush_log(t('The requested type does not exist. Try: drush typeinfo-list'), 'error');
+      return;
+    }
+    $label = $bundles[$type]['label'];
+  }
+
   $field_info = \Drupal::entityManager()->getFieldDefinitions($entity_type, $type);
   $fields = [];
 
