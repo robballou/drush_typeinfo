@@ -196,7 +196,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     drush_log(t('No field specified'), 'error');
   }
 
-  $field_info = \Drupal::entityManager()->getFieldDefinitions($entity_type, $type);
+  $field_info = field_info_field($field);
   if ($field_info && drush_get_option('field-info')) {
     drush_log(t('Field info:'));
     var_dump($field_info);
@@ -204,7 +204,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
 
   if ($field_info) {
     drush_log(t('Field info for: !field', ['!field' => $field]), 'ok');
-    drush_log(t('Type: !type', ['!type' => $field_info->getType()]), 'ok');
+    drush_log(t('Type: !type', ['!type' => $field_info['type']]), 'ok');
 
     if ($bundle) {
       if (!$entity_type) {
