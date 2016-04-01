@@ -251,22 +251,19 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     $settings = $field_info->getSettings();
     if ($field_info->getType() == 'entity_reference') {
       drush_log(
-        t('Target type: !target', ['!target' => $settings['target_type']]),
+        t('Target type: @target', ['@target' => $settings['target_type']]),
         'ok'
       );
 
       // figure out the target bundles
       $target_bundles = [];
-      if (isset($field_info['settings']['handler_settings']['target_bundles']) && $field_info['settings']['handler_settings']['target_bundles']) {
-        $target_bundles = array_keys($field_info['settings']['handler_settings']['target_bundles']);
-      }
-      elseif (isset($field_info['bundles']) && isset($field_info['bundles'][$field_info['settings']['target_type']])) {
-        $target_bundles = $field_info['bundles'][$field_info['settings']['target_type']];
+      if (isset($settings['handler_settings']['target_bundles']) && $settings['handler_settings']['target_bundles']) {
+        $target_bundles = array_keys($settings['handler_settings']['target_bundles']);
       }
 
       if ($target_bundles) {
         drush_log(
-          t('Target bundles: !bundles', ['!bundles' => implode(', ', $target_bundles)]),
+          t('Target bundles: @bundles', ['@bundles' => implode(', ', $target_bundles)]),
           'ok'
         );
       }
