@@ -270,21 +270,21 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     }
 
     // show taxonomy term reference info
-    if (isset($field_info['settings']['allowed_values'])) {
-      foreach ($field_info['settings']['allowed_values'] as $allowed_key => $allowed_value) {
+    if (isset($settings['allowed_values'])) {
+      foreach ($settings['allowed_values'] as $allowed_key => $allowed_value) {
         if (is_array($allowed_value) && isset($allowed_value['vocabulary'])) {
-          drush_log(t('Vocabulary: !vocabulary', ['!vocabulary' => $allowed_value['vocabulary']]), 'ok');
+          drush_log(t('Vocabulary: @vocabulary', ['@vocabulary' => $allowed_value['vocabulary']]), 'ok');
         }
         else {
-          drush_log(t('Value: !value: !string', ['!value' => $allowed_key, '!string' => $allowed_value]), 'ok');
+          drush_log(t('Value: @value: @string', ['@value' => $allowed_key, '@string' => $allowed_value]), 'ok');
         }
       }
     }
 
     // show datetime settings
-    if (isset($field_info['settings']['granularity'])) {
-      $granularity = array_filter($field_info['settings']['granularity']);
-      drush_log(t('Datetime collection: !items', ['!items' => implode(', ', $granularity)]), 'ok');
+    if (isset($setting['granularity'])) {
+      $granularity = array_filter($setting['granularity']);
+      drush_log(t('Datetime collection: @items', ['@items' => implode(', ', $granularity)]), 'ok');
     }
 
     // default value
