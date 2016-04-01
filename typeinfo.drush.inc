@@ -248,9 +248,10 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     }
 
     // show entityreference values
-    if (isset($field_info['settings']['target_type'])) {
+    $settings = $field_info->getSettings();
+    if ($field_info->getType() == 'entity_reference') {
       drush_log(
-        t('Target type: !target', ['!target' => $field_info['settings']['target_type']]),
+        t('Target type: !target', ['!target' => $settings['target_type']]),
         'ok'
       );
 
