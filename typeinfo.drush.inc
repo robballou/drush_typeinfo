@@ -200,15 +200,15 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     $entity_type = 'node';
   }
 
-  $field_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($entity_type, $field);
-  if ($field_info && drush_get_option('field-info')) {
+  $field_storage_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($entity_type, $field);
+  if ($field_storage_info && drush_get_option('field-info')) {
     drush_log(t('Field info:'));
-    var_dump($field_info);
+    var_dump($field_storage_info);
   }
 
-  if ($field_info) {
+  if ($field_storage_info) {
     drush_log(t('Field info for: @field', ['@field' => $field]), 'ok');
-    drush_log(t('Type: @type', ['@type' => $field_info->getType()]), 'ok');
+    drush_log(t('Type: @type', ['@type' => $field_storage_info->getType()]), 'ok');
 
     if ($bundle) {
       if (!$entity_type) {
@@ -288,8 +288,8 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     }
 
     // default value
-    if ($field->getDefaultValue()) {
-      drush_log(t('Default value: @default', ['@default' => $field->getDefaultValue()], 'ok'));
+    if ($field_info->getDefaultValue()) {
+      drush_log(t('Default value: @default', ['@default' => $field_info->getDefaultValue()], 'ok'));
     }
 
     // show cardinality
