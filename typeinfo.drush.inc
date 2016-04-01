@@ -288,8 +288,8 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     }
 
     // default value
-    if (isset($field_info['default_value'])) {
-      drush_log(t('Default value: !default', ['!default' => $field_info['default_value']]), 'ok');
+    if ($field->getDefaultValue()) {
+      drush_log(t('Default value: @default', ['@default' => $field->getDefaultValue()], 'ok'));
     }
 
     // show cardinality
