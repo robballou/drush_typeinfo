@@ -196,27 +196,39 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     drush_log(t('No field specified'), 'error');
   }
 
-  $field_info = field_info_field($field);
+  if ($bundle && !$entity_type) {
+    $entity_type = 'node';
+  }
+
+  $field_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($entity_type, $field);
   if ($field_info && drush_get_option('field-info')) {
     drush_log(t('Field info:'));
     var_dump($field_info);
   }
 
   if ($field_info) {
-    drush_log(t('Field info for: !field', ['!field' => $field]), 'ok');
-    drush_log(t('Type: !type', ['!type' => $field_info['type']]), 'ok');
+    drush_log(t('Field info for: @field', ['@field' => $field]), 'ok');
+    drush_log(t('Type: @type', ['@type' => $field_info->getType()]), 'ok');
 
     if ($bundle) {
       if (!$entity_type) {
         $entity_type = 'node';
       }
-      $instance_info = field_info_instance($entity_type, $field, $bundle);
-
-      if ($instance_info && drush_get_option('field-info')) {
-        drush_log(t('Instance info:'));
-        var_dump($instance_info);
+      $fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions($entity_type, $bundle);
+      foreach ($fields as $field_info) {
+        if ($field_info->getName() == $field) {
+          break;
+        }
       }
 
+
+      if ($field_info && drush_get_option('field-info')) {
+        drush_log(t('Instance info:'));
+        var_dump($field_info);
+        var_dump($field_info->getSettings());
+      }
+
+      /*
       if ($instance_info && drush_get_option('display-info')) {
         drush_log(t('Display info:'));
         var_dump($instance_info['display']);
@@ -226,6 +238,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
         drush_log(t('Widget info:'));
         var_dump($instance_info['widget']);
       }
+      */
 
       if ($instance_info) {
         drush_log(t('Widget: !widget', ['!widget' => $instance_info['widget']['type']]), 'ok');
