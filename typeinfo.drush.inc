@@ -293,13 +293,11 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     }
 
     // show cardinality
-    if (isset($field_info['cardinality'])) {
-      $cardinality = $field_info['cardinality'];
-      if ($cardinality == -1) {
-        $cardinality = 'unlimited';
-      }
-      drush_log(t('Cardinality: !cardinality', ['!cardinality' => $cardinality]), 'ok');
+    $cardinality = $field_storage_info->getCardinality();
+    if ($cardinality == -1) {
+      $cardinality = 'unlimited';
     }
+    drush_log(t('Cardinality: @cardinality', ['@cardinality' => $cardinality]), 'ok');
   }
 }
 
