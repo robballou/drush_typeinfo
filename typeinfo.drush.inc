@@ -128,6 +128,9 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
     }
   }
 
+  // default entity type to node if nothing is specified
+  $entity_type = $entity_type !== NULL ? $entity_type : 'node';
+
   if (!$type_info) {
     $type_info = typeinfo_get_entity($entity_type);
   }
@@ -149,7 +152,7 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
   foreach ($field_info as $field => $info) {
     $field_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($entity_type, $field);
     if (drush_get_option('field-info')) {
-      var_dump('FiledConfig', $info);
+      var_dump('FieldConfig', $info);
       if ($field_info) {
         var_dump('FieldStorageConfig', $field_info);
       }
