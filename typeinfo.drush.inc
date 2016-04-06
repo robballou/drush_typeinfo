@@ -118,6 +118,9 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
     return drush_typeinfo_list();
   }
 
+  // default entity type to node if nothing is specified
+  $entity_type = $entity_type !== NULL ? $entity_type : 'node';
+
   // figure out if $type is really a bundle or an entity type.
   $type_info = NULL;
   if (!$entity_type) {
@@ -128,8 +131,6 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
     }
   }
 
-  // default entity type to node if nothing is specified
-  $entity_type = $entity_type !== NULL ? $entity_type : 'node';
 
   if (!$type_info) {
     $type_info = typeinfo_get_entity($entity_type);
