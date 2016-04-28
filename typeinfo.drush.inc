@@ -124,13 +124,17 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
   // figure out if $type is really a bundle or an entity type.
   $type_info = NULL;
   if (!$entity_type) {
-    $type_info = typeinfo_get_entity($type);
-    if ($type_info) {
-      $entity_type = $type;
-      $type = NULL;
+    try {
+      $type_info = typeinfo_get_entity($type);
+      if ($type_info) {
+        $entity_type = $type;
+        $type = NULL;
+      }
+    }
+    catch (\Drupal\Component\Plugin\Exception\PluginNotFoundException $e) {
+      $entity_type = 'node';
     }
   }
-
 
   if (!$type_info) {
     $type_info = typeinfo_get_entity($entity_type);
