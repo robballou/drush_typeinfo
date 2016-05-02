@@ -202,13 +202,20 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
 function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
   if (!$field) {
     drush_log(t('No field specified'), 'error');
+    return;
   }
 
+  // set the default bundle to 'node' if it is not set.
   if ($bundle && !$entity_type) {
     $entity_type = 'node';
   }
 
   $field_storage_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($entity_type, $field);
+  if (!$field_storage_info) {
+    drush_log(t('Could not load information about the field'), 'error');
+    return;
+  }
+
   if ($field_storage_info && drush_get_option('field-info')) {
     drush_log(t('Field info:'));
     var_dump($field_storage_info);
