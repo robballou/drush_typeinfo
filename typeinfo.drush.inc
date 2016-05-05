@@ -292,14 +292,12 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
           foreach ($displays as $display) {
             if (preg_match('/^' . $entity_type . '\.' . $bundle . '.+/', $display)) {
               $this_display = $field_form_displays[$display];
-              var_dump(array_keys($this_display['content']));
               if (!isset($this_display['content'][$field])) {
                 continue;
               }
 
               $display = explode('.', $display);
-              drush_log('  ' . $display[2] . ': ' . $this_display['content'][$field]['type']);
-              // var_dump($this_display['content'][$field]);
+              drush_log('  ' . $display[2] . ': ' . $this_display['content'][$field]['type'], 'ok');
             }
           }
         }
