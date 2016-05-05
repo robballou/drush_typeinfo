@@ -492,7 +492,15 @@ function drush_typeinfo_sort_bundles($a, $b) {
  * Output raw values.
  */
 function drush_typeinfo_raw_output($thing) {
-  if (function_exists('yaml_emit')) {
+  $use_yaml = function_exists('yaml_emit');
+  if (is_object($thing) && !method_exists($thing, 'toArray')) {
+    $use_yaml = FALSE;
+  }
+
+  if ($use_yaml) {
+    if (is_object($thing)) {
+      $thing = $this->toArray();
+    }
     echo yaml_emit($thing);
     return;
   }
