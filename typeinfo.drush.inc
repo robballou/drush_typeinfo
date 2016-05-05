@@ -288,7 +288,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
         }
 
         if ($entity_type && $bundle) {
-          drush_log('Widgets:', 'ok');
+          drush_log("Widgets ($entity_type.$bundle):", 'ok');
           foreach ($displays as $display) {
             if (preg_match('/^' . $entity_type . '\.' . $bundle . '.+/', $display)) {
               $this_display = $field_form_displays[$display];
@@ -298,6 +298,9 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
 
               $display = explode('.', $display);
               drush_log('  ' . $display[2] . ': ' . $this_display['content'][$field]['type'], 'ok');
+            }
+            if (drush_get_option('field-info')) {
+              var_dump($this_display['content'][$field]);
             }
           }
         }
