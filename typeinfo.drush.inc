@@ -221,9 +221,9 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
   }
 
   $form_info = NULL;
+  $field_form_displays = [];
   if ($bundle && $entity_type) {
     $entity_form_display = Drupal::entityTypeManager()->getStorage('entity_form_display');
-    $field_form_displays = [];
     $form_displays = Drupal::entityQuery('entity_form_display')->execute();
     foreach ($form_displays as $form_display) {
       $this_display = $entity_form_display->load($form_display);
@@ -278,6 +278,10 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
         drush_log(t('Widget: !widget', ['!widget' => $instance_info['widget']['type']]), 'ok');
         $displays = array_keys(array_filter($instance_info['display'], 'drush_typeinfo_filter_displays'));
         drush_log(t('Display view modes: !modes', ['!modes' => implode(', ', $displays)]), 'ok');
+      }
+
+      if ($field_form_displays) {
+        drush_log('Form displays: ' . implode(', ', array_keys($field_form_displays)), 'ok');
       }
     }
 
