@@ -172,7 +172,6 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
       $field,
       $required,
       $type,
-      '?',
       $info->getLabel(),
     ];
 
@@ -186,7 +185,7 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
   drush_log($label, 'ok');
   if (count($fields) > 0) {
     ksort($fields);
-    array_unshift($fields, ['Field', 'Required', 'Type', 'Widget', 'Label']);
+    array_unshift($fields, ['Field', 'Required', 'Type', 'Label']);
     return drush_print_table($fields, TRUE);
   }
 
@@ -210,10 +209,30 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     $entity_type = 'node';
   }
 
+  if (!$entity_type) {
+    drush_log(t('In Drupal 8, you need to supply entity or bundle information.'), 'error');
+    return;
+  }
+
   $field_storage_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($entity_type, $field);
   if (!$field_storage_info) {
     drush_log(t('Could not load information about the field'), 'error');
     return;
+  }
+
+  $form_info = NULL;
+  if ($bundle && $entity_type) {
+    $entity_form_display = Drupal::entityTypeManager()->getStorage('entity_form_display');
+    $field_form_displays = [];
+    $form_displays = Drupal::entityQuery('entity_form_display')->execute();
+    foreach ($form_displays as $form_display) {
+      $this_display = $entity_form_display->load($form_display);
+      $this_display = $this_display->toArray();
+      if (isset($this_display['content'][$field])) {
+        $field_form_displays[$form_display] = $this_display;
+      }
+    }
+    var_dump($field_form_displays);
   }
 
   if ($field_storage_info && drush_get_option('field-info')) {
