@@ -256,22 +256,10 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
 
 
       if ($field_info && drush_get_option('field-info')) {
-        drush_log(t('Instance info:'));
+        drush_print(t('Instance info:'));
         drush_typeinfo_raw_output($field_info);
         drush_typeinfo_raw_output($field_info->getSettings());
       }
-
-      /*
-      if ($instance_info && drush_get_option('display-info')) {
-        drush_log(t('Display info:'));
-        drush_typeinfo_raw_output($instance_info['display']);
-      }
-
-      if ($instance_info && drush_get_option('widget-info')) {
-        drush_log(t('Widget info:'));
-        drush_typeinfo_raw_output($instance_info['widget']);
-      }
-      */
 
       if ($instance_info) {
         drush_log(t('Widget: !widget', ['!widget' => $instance_info['widget']['type']]), 'ok');
@@ -280,14 +268,14 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
       }
 
       if ($field_form_displays) {
-        drush_log('Form displays: ', 'ok');
+        drush_print('Form displays: ');
         $displays = array_keys($field_form_displays);
         foreach ($displays as $display) {
-          drush_log('  - ' . $display, 'ok');
+          drush_print('  - ' . $display);
         }
 
         if ($entity_type && $bundle) {
-          drush_log("Widgets ($entity_type.$bundle):", 'ok');
+          drush_print("Widgets ($entity_type.$bundle):");
           foreach ($displays as $display) {
             if (preg_match('/^' . $entity_type . '\.' . $bundle . '.+/', $display)) {
               $this_display = $field_form_displays[$display];
@@ -296,7 +284,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
               }
 
               $display = explode('.', $display);
-              drush_log('  ' . $display[2] . ': ' . $this_display['content'][$field]['type'], 'ok');
+              drush_print('  ' . $display[2] . ': ' . $this_display['content'][$field]['type']);
             }
             if (drush_get_option('field-info')) {
               drush_typeinfo_raw_output($this_display['content'][$field]);
@@ -309,10 +297,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     // show entityreference values
     $settings = $field_info->getSettings();
     if ($field_info->getType() == 'entity_reference') {
-      drush_log(
-        t('Target type: @target', ['@target' => $settings['target_type']]),
-        'ok'
-      );
+      drush_print(t('Target type: @target', ['@target' => $settings['target_type']]));
 
       // figure out the target bundles
       $target_bundles = [];
@@ -321,10 +306,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
       }
 
       if ($target_bundles) {
-        drush_log(
-          t('Target bundles: @bundles', ['@bundles' => implode(', ', $target_bundles)]),
-          'ok'
-        );
+        drush_print(t('Target bundles: @bundles', ['@bundles' => implode(', ', $target_bundles)]));
       }
     }
 
@@ -332,10 +314,10 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     if (isset($settings['allowed_values'])) {
       foreach ($settings['allowed_values'] as $allowed_key => $allowed_value) {
         if (is_array($allowed_value) && isset($allowed_value['vocabulary'])) {
-          drush_log(t('Vocabulary: @vocabulary', ['@vocabulary' => $allowed_value['vocabulary']]), 'ok');
+          drush_print(t('Vocabulary: @vocabulary', ['@vocabulary' => $allowed_value['vocabulary']]));
         }
         else {
-          drush_log(t('Value: @value: @string', ['@value' => $allowed_key, '@string' => $allowed_value]), 'ok');
+          drush_print(t('Value: @value: @string', ['@value' => $allowed_key, '@string' => $allowed_value]));
         }
       }
     }
@@ -343,12 +325,12 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     // show datetime settings
     if (isset($setting['granularity'])) {
       $granularity = array_filter($setting['granularity']);
-      drush_log(t('Datetime collection: @items', ['@items' => implode(', ', $granularity)]), 'ok');
+      drush_print(t('Datetime collection: @items', ['@items' => implode(', ', $granularity)]));
     }
 
     // default value
     if ($field_info->getDefaultValueLiteral()) {
-      drush_log(t('Default value: @default', ['@default' => $field_info->getDefaultValueLiteral()], 'ok'));
+      drush_print(t('Default value: @default', ['@default' => $field_info->getDefaultValueLiteral()]));
     }
 
     // show cardinality
@@ -356,7 +338,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
     if ($cardinality == -1) {
       $cardinality = 'unlimited';
     }
-    drush_log(t('Cardinality: @cardinality', ['@cardinality' => $cardinality]), 'ok');
+    drush_print(t('Cardinality: @cardinality', ['@cardinality' => $cardinality]));
   }
 }
 
