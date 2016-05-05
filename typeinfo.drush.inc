@@ -282,8 +282,17 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
 
       if ($field_form_displays) {
         drush_log('Form displays: ', 'ok');
-        foreach (array_keys($field_form_displays) as $display) {
+        $displays = array_keys($field_form_displays);
+        foreach ($displays as $display) {
           drush_log('  - ' . $display, 'ok');
+        }
+
+        if ($entity_type && $bundle) {
+          foreach ($displays as $display) {
+            if (preg_match('/^' . $entity_type . '\.' . $bundle . '/', $display)) {
+              var_dump($field_form_displays[$display]);
+            }
+          }
         }
       }
     }
