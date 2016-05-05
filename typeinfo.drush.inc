@@ -182,7 +182,7 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
     $fields[$field] = $field_output;
   }
 
-  drush_log($label, 'ok');
+  drush_print($label);
   if (count($fields) > 0) {
     ksort($fields);
     array_unshift($fields, ['Field', 'Required', 'Type', 'Label']);
@@ -235,13 +235,13 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
   }
 
   if ($field_storage_info && drush_get_option('field-info')) {
-    drush_log(t('Field info:'));
+    drush_print(t('Field info:'));
     drush_typeinfo_raw_output($field_storage_info);
   }
 
   if ($field_storage_info) {
-    drush_log(t('Field info for: @field', ['@field' => $field]), 'ok');
-    drush_log(t('Type: @type', ['@type' => $field_storage_info->getType()]), 'ok');
+    drush_print(t('Field info for: @field', ['@field' => $field]));
+    drush_print(t('Type: @type', ['@type' => $field_storage_info->getType()]));
 
     if ($bundle) {
       if (!$entity_type) {
