@@ -232,7 +232,6 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
         $field_form_displays[$form_display] = $this_display;
       }
     }
-    var_dump($field_form_displays);
   }
 
   if ($field_storage_info && drush_get_option('field-info')) {
