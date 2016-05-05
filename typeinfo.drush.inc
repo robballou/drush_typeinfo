@@ -290,7 +290,12 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
         if ($entity_type && $bundle) {
           foreach ($displays as $display) {
             if (preg_match('/^' . $entity_type . '\.' . $bundle . '/', $display)) {
-              var_dump($field_form_displays[$display]);
+              $this_display = $field_form_displays[$display];
+              if (!isset($this_display['content'][$field])) {
+                continue;
+              }
+
+              var_dump($this_display['content'][$field]);
             }
           }
         }
