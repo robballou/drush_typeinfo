@@ -499,7 +499,7 @@ function drush_typeinfo_raw_output($thing) {
 
   if ($use_yaml) {
     if (is_object($thing)) {
-      $thing = $this->toArray();
+      $thing = $thing->toArray();
     }
     echo yaml_emit($thing);
     return;
