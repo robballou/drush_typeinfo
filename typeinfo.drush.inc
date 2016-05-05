@@ -281,7 +281,10 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
       }
 
       if ($field_form_displays) {
-        drush_log('Form displays: ' . implode(', ', array_keys($field_form_displays)), 'ok');
+        drush_log('Form displays: ', 'ok');
+        foreach (array_keys($field_form_displays) as $display) {
+          drush_log('  - ' . $display, 'ok');
+        }
       }
     }
 
