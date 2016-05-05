@@ -157,9 +157,9 @@ function drush_typeinfo($type = NULL, $entity_type = NULL) {
   foreach ($field_info as $field => $info) {
     $field_info = \Drupal\field\Entity\FieldStorageConfig::loadByName($entity_type, $field);
     if (drush_get_option('field-info')) {
-      var_dump('FieldConfig', $info);
+      drush_typeinfo_raw_output('FieldConfig', $info);
       if ($field_info) {
-        var_dump('FieldStorageConfig', $field_info);
+        drush_typeinfo_raw_output('FieldStorageConfig', $field_info);
       }
     }
 
@@ -236,7 +236,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
 
   if ($field_storage_info && drush_get_option('field-info')) {
     drush_log(t('Field info:'));
-    var_dump($field_storage_info);
+    drush_typeinfo_raw_output($field_storage_info);
   }
 
   if ($field_storage_info) {
@@ -257,19 +257,19 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
 
       if ($field_info && drush_get_option('field-info')) {
         drush_log(t('Instance info:'));
-        var_dump($field_info);
-        var_dump($field_info->getSettings());
+        drush_typeinfo_raw_output($field_info);
+        drush_typeinfo_raw_output($field_info->getSettings());
       }
 
       /*
       if ($instance_info && drush_get_option('display-info')) {
         drush_log(t('Display info:'));
-        var_dump($instance_info['display']);
+        drush_typeinfo_raw_output($instance_info['display']);
       }
 
       if ($instance_info && drush_get_option('widget-info')) {
         drush_log(t('Widget info:'));
-        var_dump($instance_info['widget']);
+        drush_typeinfo_raw_output($instance_info['widget']);
       }
       */
 
@@ -299,7 +299,7 @@ function drush_typeinfo_field($field, $bundle = NULL, $entity_type = NULL) {
               drush_log('  ' . $display[2] . ': ' . $this_display['content'][$field]['type'], 'ok');
             }
             if (drush_get_option('field-info')) {
-              var_dump($this_display['content'][$field]);
+              drush_typeinfo_raw_output($this_display['content'][$field]);
             }
           }
         }
@@ -486,4 +486,15 @@ function drush_typeinfo_sort_bundles($a, $b) {
     return strcmp($a[1], $b[1]);
   }
   return strcmp($a[0], $b[0]);
+}
+
+/**
+ * Output raw values.
+ */
+function drush_typeinfo_raw_output($thing) {
+  if (function_exists('yaml_emit')) {
+    echo yaml_emit($thing);
+    return;
+  }
+  drush_typeinfo_raw_output($thing);
 }
